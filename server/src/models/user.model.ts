@@ -23,7 +23,6 @@ const UserSchema: Schema = new Schema({
     },
     companyId: {
         type: String,
-        required: true,
         ref: 'Company',
     },
 });
