@@ -1,6 +1,4 @@
 {
-    "cSpell.words": [
-        "graphiql"
-    ],
-    "editor.formatOnSave": true,
+    "cSpell.words": ["graphiql", "QLID"],
+    "editor.formatOnSave": true
 }
