@@ -13,6 +13,19 @@ const GET_SONGS_TITLES = gql`
     }
 `;
 
+type Song = {
+    title: string;
+    lyrics: {
+        text: string;
+        timestamp: number;
+    }[];
+};
+
+type Lyric = {
+    text: string;
+    timestamp: number;
+};
+
 function SongList() {
     const { loading, error, data } = useQuery(GET_SONGS_TITLES);
 
@@ -25,11 +38,11 @@ function SongList() {
         <div>
             <h1>Song List</h1>
             <ul>
-                {data.songs.map((song: any, songIndex: number) => (
+                {data.songs.map((song: Song, songIndex: number) => (
                     <Fragment key={songIndex}>
                         <li>{song.title}</li>
                         <ul>
-                            {song.lyrics.map((lyric: any, lyricIndex: number) => (
+                            {song.lyrics.map((lyric: Lyric, lyricIndex: number) => (
                                 <li key={lyricIndex}>{lyric.text}</li>
                             ))}
                         </ul>
