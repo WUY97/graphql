@@ -1,6 +1,6 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 
-import CompanyType from '../types/CompanyType';
+import { CompanyType } from '../types';
 
 const companyQueries = {
     company: {

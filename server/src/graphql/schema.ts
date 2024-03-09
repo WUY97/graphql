@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { userQueries, companyQueries } from './queries';
+import { userQueries, companyQueries, songQueries } from './queries';
 import { userMutations } from './mutations';
 
 const RootQuery = new GraphQLObjectType({
@@ -7,6 +7,7 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         ...userQueries,
         ...companyQueries,
+        ...songQueries,
     },
 });
 

@@ -1,6 +1,6 @@
 import { graphqlHTTP } from 'express-graphql';
 import Schema from '../graphql/schema';
-import { UserModel, CompanyModel } from '../models';
+import { UserModel, CompanyModel, SongModel, LyricModel } from '../models';
 
 const graphqlController = graphqlHTTP({
     schema: Schema,
@@ -8,6 +8,8 @@ const graphqlController = graphqlHTTP({
     context: {
         UserModel,
         CompanyModel,
+        SongModel,
+        LyricModel,
     },
 });
 

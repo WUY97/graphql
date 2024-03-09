@@ -1,40 +1,72 @@
 import mongoose from 'mongoose';
-import { UserModel, CompanyModel } from './models';
+import { UserModel, CompanyModel, SongModel, LyricModel } from './models';
+import * as S from './assets/seeds';
+import path from 'path';
+import { parseLRC } from './utils/lyrics';
+
 const MONGO_URI = process.env.MONGO_URI;
 
-const userSeeds = [
-    {
-        id: '1',
-        firstName: 'Apple Banana',
-        age: 25,
-        companyId: '1',
-    },
-    {
-        id: '2',
-        firstName: 'Cat Dog',
-        age: 24,
-        companyId: '2',
-    },
-    {
-        id: '3',
-        firstName: 'Elephant Fox',
-        age: 30,
-        companyId: '1',
-    },
-];
+const updateSeeds = async () => {
+    await UserModel.bulkWrite(
+        S.USER_SEEDS.map((user) => ({
+            updateOne: {
+                filter: { id: user.id },
+                update: { $set: user },
+                upsert: true,
+            },
+        }))
+    );
+    console.log('User seeds added...');
 
-const companySeeds = [
-    {
-        id: '1',
-        name: 'Doodle',
-        description: 'A company that makes doodles',
-    },
-    {
-        id: '2',
-        name: 'Abode',
-        description: 'A company that makes abodes',
-    },
-];
+    await CompanyModel.bulkWrite(
+        S.COMPANY_SEEDS.map((company) => ({
+            updateOne: {
+                filter: { id: company.id },
+                update: { $set: company },
+                upsert: true,
+            },
+        }))
+    );
+    console.log('Company seeds added...');
+
+    await SongModel.deleteMany({});
+    await LyricModel.deleteMany({});
+
+    for (const song of S.SONG_SEEDS) {
+        const newSong = await SongModel.create({
+            title: song.title,
+            artist: song.artist,
+            album: song.album,
+            releasedDate: song.releasedDate,
+            lyricsIds: [],
+        });
+
+        const lyrics = await parseLRC(
+            path.join(__dirname, `./assets/${song.lyricFileName}`)
+        );
+
+        const lyricsIds = [];
+        for (const lyric of lyrics) {
+            const newLyric = await LyricModel.create({
+                text: lyric.text,
+                timestamp: lyric.timestamp,
+                songId: newSong._id,
+            });
+            lyricsIds.push(newLyric._id);
+        }
+        await SongModel.updateOne(
+            {
+                _id: newSong._id,
+            },
+            {
+                $set: {
+                    lyricsIds: lyricsIds,
+                },
+            }
+        );
+    }
+    console.log('Song and lyrics seeds added...');
+};
 
 const connectDB = async () => {
     try {
@@ -42,21 +74,7 @@ const connectDB = async () => {
         await mongoose.connect(MONGO_URI as string);
         console.log('MongoDB Connected...');
 
-        for (const user of userSeeds) {
-            const userExists = await UserModel.exists({ id: user.id });
-            if (!userExists) {
-                await UserModel.create(user);
-            }
-        }
-        console.log('User seeds added...');
-
-        for (const company of companySeeds) {
-            const companyExists = await CompanyModel.exists({ id: company.id });
-            if (!companyExists) {
-                await CompanyModel.create(company);
-            }
-        }
-        console.log('Company seeds added...');
+        updateSeeds();
     } catch (err: any) {
         console.error(err.message);
         process.exit(1);
