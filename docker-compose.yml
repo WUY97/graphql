@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+    backend:
+        build: ./server
+        ports:
+            - '4000:4000'
+        environment:
+            MONGO_URI: 'mongodb+srv://ywu97:Schedrin1@cluster0.q42g0nd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+        volumes:
+            - ./server:/app
+            - /app/node_modules
+
+    frontend:
+        build: ./frontend
+        ports:
+            - '8080:80'
+        volumes:
+            - ./frontend:/usr/src/app
+            - /usr/src/app/node_modules
