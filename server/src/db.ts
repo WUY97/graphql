@@ -32,38 +32,24 @@ const updateSeeds = async () => {
     await SongModel.deleteMany({});
     await LyricModel.deleteMany({});
 
-    for (const song of S.SONG_SEEDS) {
-        const newSong = await SongModel.create({
-            title: song.title,
-            artist: song.artist,
-            album: song.album,
-            releasedDate: song.releasedDate,
-            lyricsIds: [],
+    for (const songData of S.SONG_SEEDS) {
+        const user = await UserModel.findOne({ id: songData.user });
+        if (!user) {
+            throw new Error(`User with id ${songData.user} not found`);
+        }
+
+        const song = await SongModel.create({
+            title: songData.title,
+            user: user._id,
         });
 
         const lyrics = await parseLRC(
-            path.join(__dirname, `./assets/${song.lyricFileName}`)
+            path.join(__dirname, `./assets/${songData.lyricFileName}`)
         );
 
-        const lyricsIds = [];
-        for (const lyric of lyrics) {
-            const newLyric = await LyricModel.create({
-                text: lyric.text,
-                timestamp: lyric.timestamp,
-                songId: newSong._id,
-            });
-            lyricsIds.push(newLyric._id);
+        for (const lyricData of lyrics) {
+            await SongModel.addLyric(song._id, lyricData.content);
         }
-        await SongModel.updateOne(
-            {
-                _id: newSong._id,
-            },
-            {
-                $set: {
-                    lyricsIds: lyricsIds,
-                },
-            }
-        );
     }
     console.log('Song and lyrics seeds added...');
 };

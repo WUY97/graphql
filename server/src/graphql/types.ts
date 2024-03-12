@@ -52,11 +52,8 @@ export const SongType = new GraphQLObjectType({
     fields: () => {
         const LyricType = require('./types').LyricType;
         return {
+            id: { type: GraphQLID },
             title: { type: GraphQLString },
-            artist: { type: GraphQLString },
-            album: { type: GraphQLString },
-            releasedDate: { type: GraphQLString },
-            durationInSeconds: { type: GraphQLInt },
             lyrics: {
                 type: new GraphQLList(LyricType),
                 resolve: async (
@@ -64,9 +61,7 @@ export const SongType = new GraphQLObjectType({
                     args: { id: string },
                     context: any
                 ) => {
-                    return await context.LyricModel.find({
-                        _id: { $in: parentValue.lyricsIds },
-                    });
+                    return await context.SongModel.findLyrics(parentValue.id);
                 },
             },
         };
@@ -78,18 +73,15 @@ export const LyricType = new GraphQLObjectType({
     fields: () => {
         const SongType = require('./types').SongType;
         return {
-            text: { type: GraphQLString },
-            timestamp: { type: GraphQLInt },
+            id: { type: GraphQLID },
+            likes: { type: GraphQLInt },
+            content: { type: GraphQLString },
             song: {
                 type: SongType,
-                resolve: async (
-                    parentValue: any,
-                    args: { id: string },
-                    context: any
-                ) => {
-                    return await context.SongModel.findOne({
-                        _id: parentValue.songId,
-                    });
+                resolve: async (parentValue: any, args, context) => {
+                    return await context.LyricModel.findById(parentValue)
+                        .populate('song')
+                        .then((lyric: any) => lyric.song);
                 },
             },
         };

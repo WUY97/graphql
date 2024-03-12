@@ -35,16 +35,12 @@ export const COMPANY_SEEDS = [
 export const SONG_SEEDS = [
     {
         title: 'this is what autumn feels like',
-        artist: 'JVKE',
-        album: 'this is what ____ feels like',
-        releasedDate: '2023-09-12',
+        user: '1',
         lyricFileName: 'golden-hour.lrc',
     },
     {
         title: 'Shinunoga E Wa',
-        artist: 'Fuji Kaze',
-        album: 'Help Ever Hurt Never',
-        releasedDate: '2020-02-03',
+        user: '2',
         lyricFileName: 'shinunoga-e-wa.lrc',
     },
 ];

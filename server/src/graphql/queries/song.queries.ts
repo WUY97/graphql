@@ -9,11 +9,15 @@ const songQueries = {
             return await context.SongModel.find({});
         },
     },
-    songsByTitle: {
-        type: new GraphQLList(SongType),
-        args: { title: { type: new GraphQLNonNull(GraphQLString) } },
-        resolve: async (parentValue: any, args: any, context: any) => {
-            return await context.SongModel.find({ title: args.title });
+    song: {
+        type: SongType,
+        args: { id: { type: new GraphQLNonNull(GraphQLString) } },
+        resolve: async (
+            parentValue: any,
+            args: { id: string },
+            context: any
+        ) => {
+            return await context.SongModel.findById(args.id);
         },
     },
 };

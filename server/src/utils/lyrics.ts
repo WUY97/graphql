@@ -9,7 +9,7 @@ export async function parseLRC(filePath: string) {
             if (match) {
                 return {
                     timestamp: convertToMilliseconds(match[1]),
-                    text: match[2],
+                    content: match[2],
                 };
             }
         })
