@@ -1,33 +1,18 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Fragment } from 'react';
-
-const GET_SONGS_TITLES = gql`
-    query {
-        songs {
-            title
-            lyrics {
-                text
-                timestamp
-            }
-        }
-    }
-`;
+import * as g from '../GraphQL';
 
 type Song = {
     title: string;
-    lyrics: {
-        text: string;
-        timestamp: number;
-    }[];
+    lyrics: Lyric[];
 };
 
 type Lyric = {
-    text: string;
-    timestamp: number;
+    content: string;
 };
 
 function SongList() {
-    const { loading, error, data } = useQuery(GET_SONGS_TITLES);
+    const { loading, error, data } = useQuery(g.GET_SONGS_TITLES);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>
@@ -43,7 +28,7 @@ function SongList() {
                         <li>{song.title}</li>
                         <ul>
                             {song.lyrics.map((lyric: Lyric, lyricIndex: number) => (
-                                <li key={lyricIndex}>{lyric.text}</li>
+                                <li key={lyricIndex}>{lyric.content}</li>
                             ))}
                         </ul>
                     </Fragment>

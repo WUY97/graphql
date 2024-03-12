@@ -1,12 +1,16 @@
-import SongList from './components/SongList'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import SongPage from './pages/SongPage';
 
 function App() {
-
   return (
-    <>
-      <SongList />
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="song/new" element={<SongPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
