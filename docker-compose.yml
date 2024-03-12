@@ -5,7 +5,7 @@ services:
         ports:
             - '4000:4000'
         environment:
-            MONGO_URI: 'mongodb+srv://ywu97:Schedrin1@cluster0.q42g0nd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+            MONGO_URI: ${MONGO_URI}
         volumes:
             - ./server:/app
             - /app/node_modules
