@@ -2,6 +2,10 @@ provider "aws" {
   region = var.AWS_REGION
 }
 
+data "aws_eip" "existing_eip" {
+  id = var.EIP_ALLOCATION_ID
+}
+
 resource "aws_instance" "app_server" {
   ami           = var.AMI
   instance_type = var.INSTANCE_TYPE
@@ -34,6 +38,11 @@ resource "aws_instance" "app_server" {
                 sudo docker-compose up
 
                 EOF
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.app_server.id
+  allocation_id = data.aws_eip.existing_eip.id
 }
 
 resource "aws_security_group" "app_sg" {

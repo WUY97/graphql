@@ -74,3 +74,9 @@ variable "REACT_DOCKER_PORT" {
   description = "Docker port where the React app is running"
   default     = 80
 }
+
+variable "EIP_ALLOCATION_ID" {
+  type        = string
+  description = "Elastic IP allocation ID"
+  default     = "eipalloc-012ea7be2a490ca25"
+}
