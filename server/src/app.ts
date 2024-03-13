@@ -29,10 +29,15 @@ async function startServer() {
     //     credentials: true,
     //     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     // };
+    const corsOptions = {
+        origin: '*',
+        credentials: true,
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    };
 
     const app = express();
 
-    app.use(cors());
+    app.use(cors(corsOptions));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
