@@ -24,15 +24,15 @@ async function startServer() {
     const server = new ApolloServer({ typeDefs, resolvers });
     await server.start();
 
-    const corsOptions = {
-        origin: process.env.CLIENT_ORIGIN,
-        credentials: true,
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    };
+    // const corsOptions = {
+    //     origin: process.env.CLIENT_ORIGIN,
+    //     credentials: true,
+    //     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    // };
 
     const app = express();
 
-    app.use(cors(corsOptions));
+    app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
