@@ -1,6 +1,6 @@
 FROM node:18-alpine as build
 
-WORKDIR /app
+WORKDIR /frontend
 
 COPY package.json yarn.lock ./
 
@@ -12,8 +12,8 @@ RUN yarn build
 
 FROM nginx:stable-alpine as runtime
 
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /frontend/dist /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE $REACT_DOCKER_PORT
 
 CMD ["nginx", "-g", "daemon off;"]

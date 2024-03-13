@@ -3,6 +3,6 @@ import { graphqlController } from '../controllers';
 
 const router = Router();
 
-router.use('/graphql', graphqlController);
+router.use('/api/graphql', graphqlController);
 
 export default router;

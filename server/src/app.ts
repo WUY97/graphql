@@ -25,7 +25,7 @@ async function startServer() {
     await server.start();
 
     const corsOptions = {
-        origin: ['http://localhost:5173', 'http://localhost:8080'],
+        origin: process.env.CLIENT_ORIGIN,
         credentials: true,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     };
@@ -34,6 +34,7 @@ async function startServer() {
 
     app.use(cors(corsOptions));
     app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
     app.use(graphqlRouter);
 
@@ -41,7 +42,7 @@ async function startServer() {
 
     connectDB();
 
-    const PORT = process.env.PORT || 4000;
+    const PORT = process.env.NODE_DOCKER_PORT || 6868;
     app.listen(PORT, () => {
         console.log(
             `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
