@@ -1,5 +1,9 @@
 FROM node:18-alpine as build
 
+ARG VITE_API_BASE_URL
+
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
 WORKDIR /frontend
 
 COPY package.json yarn.lock ./

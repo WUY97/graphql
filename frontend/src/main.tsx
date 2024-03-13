@@ -5,9 +5,11 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import App from './App'
 import './index.css'
 
+const apiUrl = import.meta.env.VITE_API_BASE_URL as string + '/graphql'
+
 
 const client = new ApolloClient({
-  uri: 'http://54.193.206.20:6868/api/graphql',
+  uri: apiUrl,
   cache: new InMemoryCache()
 });
 
