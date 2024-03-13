@@ -7,10 +7,8 @@ data "aws_eip" "existing_eip" {
 }
 
 resource "aws_instance" "app_server" {
-  ami           = var.AMI
-  instance_type = var.INSTANCE_TYPE
-
-  key_name               = var.KEY_PAIR_NAME
+  ami                    = var.AMI
+  instance_type          = var.INSTANCE_TYPE
   vpc_security_group_ids = [aws_security_group.app_sg.id]
 
   user_data = <<-EOF
@@ -31,7 +29,7 @@ resource "aws_instance" "app_server" {
                 echo "NODE_LOCAL_PORT=${var.NODE_LOCAL_PORT}" >> .env
                 echo "NODE_DOCKER_PORT=${var.NODE_DOCKER_PORT}" >> .env
                 echo "CLIENT_ORIGIN=${var.CLIENT_ORIGIN}" >> .env
-                echo "CLIENT_API_BASE_URL=${var.CLIENT_API_BASE_URL}" >> .env
+                echo "VITE_API_BASE_URL=${var.VITE_API_BASE_URL}" >> .env
                 echo "REACT_LOCAL_PORT=${var.REACT_LOCAL_PORT}" >> .env
                 echo "REACT_DOCKER_PORT=${var.REACT_DOCKER_PORT}" >> .env
                 sudo docker-compose build

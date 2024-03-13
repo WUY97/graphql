@@ -16,12 +16,6 @@ variable "INSTANCE_TYPE" {
   default     = "t2.micro"
 }
 
-variable "KEY_PAIR_NAME" {
-  type        = string
-  description = "Name of the key pair to use for the instance"
-  default     = "weicureco"
-}
-
 variable "MONGO_URI" {
   type        = string
   description = "MongoDB URI"
@@ -54,13 +48,13 @@ variable "NODE_DOCKER_PORT" {
 variable "CLIENT_ORIGIN" {
   type        = string
   description = "Client origin"
-  default     = "http://127.0.0.1:8080"
+  default     = "http://54.193.206.20:8080"
 }
 
-variable "CLIENT_API_BASE_URL" {
+variable "VITE_API_BASE_URL" {
   type        = string
-  description = "Client API base URL"
-  default     = "http://127.0.0.1:6868/api"
+  description = "VITE API base URL"
+  default     = "http://54.193.206.20:6868/api"
 }
 
 variable "REACT_LOCAL_PORT" {
